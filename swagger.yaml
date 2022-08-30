@@ -3,32 +3,33 @@ info:
   title: SAP APIs
   version: 1.0.0
 servers:
-- url: https://apigatewayqa.adient.com/sap/v2
-  description: Quality
+  - url: https://apigatewayqa.adient.com/sap/v2
+    description: Quality
 paths:
   /GetSuppExpiredCert:
     get:
       tags:
-      - Get Suppliers with an expired certificate
+        - Get Suppliers with an expired certificate
       summary: Get details for suppliers with an expired certificate
-      description: Get details for suppliers with an expired certificate. Requires
-        a From and a To Date to filter the results
+      description: >-
+        Get details for suppliers with an expired certificate. Requires a From
+        and a To Date to filter the results
       operationId: GetSuppExpiredCert
       parameters:
-      - name: FromDate
-        in: query
-        description: From Date
-        required: true
-        schema:
-          type: string
-      - name: ToDate
-        in: query
-        description: To Date
-        required: true
-        schema:
-          type: string
+        - name: FromDate
+          in: query
+          description: From Date
+          required: true
+          schema:
+            type: string
+        - name: ToDate
+          in: query
+          description: To Date
+          required: true
+          schema:
+            type: string
       responses:
-        200:
+        '200':
           description: OK
           content:
             application/json; charset=UTF-8:
@@ -36,16 +37,16 @@ paths:
                 minItems: 1
                 uniqueItems: true
                 type: array
-                description: ""
+                description: ''
                 items:
                   required:
-                  - CertExpiredDate
-                  - certficatedesc
-                  - certificatetype
-                  - expireddate
-                  - metadata
-                  - supplier
-                  - suppliername
+                    - CertExpiredDate
+                    - certficatedesc
+                    - certificatetype
+                    - expireddate
+                    - metadata
+                    - supplier
+                    - suppliername
                   type: object
                   properties:
                     metadata:
@@ -56,7 +57,7 @@ paths:
                       example: 123456
                     certificatetype:
                       type: string
-                      example: 0003
+                      example: '0003'
                     suppliername:
                       type: string
                       example: Supplier Name
@@ -65,17 +66,17 @@ paths:
                       example: Certificate Description
                     expireddate:
                       type: string
-                      example: "\/Date(1627171200000)\/"
+                      example: /Date(1627171200000)/
                     CertExpiredDate:
                       type: string
-                      example: 2021-07-25
-        401:
+                      example: 2021-07-25T00:00:00.000Z
+        '401':
           description: Unauthorized
           content:
             application/json:
               schema:
                 type: object
-                description: ""
+                description: ''
                 properties:
                   code:
                     type: string
