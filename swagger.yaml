@@ -3,15 +3,32 @@ info:
   title: SAP APIs
   version: 1.0.0
 servers:
+  - url: https://apigatewaydev.adient.com/sap/v2
+    description: Dev
+    variables:
+      scheme:
+        enum:
+          - https
+        default: https
   - url: https://apigatewayqa.adient.com/sap/v2
     description: Quality
+    variables:
+      scheme:
+        enum:
+          - https
+        default: https
   - url: https://apigateway.adient.com/sap/v2
     description: Production
+    variables:
+      scheme:
+        enum:
+          - https
+        default: https
 paths:
   /GetSuppExpiredCert:
     get:
       tags:
-        - Get Suppliers with an expired certificate
+        - Supplier
       summary: Get details for suppliers with an expired certificate
       description: >-
         Get details for suppliers with an expired certificate. Requires a From
@@ -77,15 +94,101 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                description: ''
-                properties:
-                  code:
-                    type: string
-                    example: 401
-                  message:
-                    type: string
-                    example: Invalid Authorization key for resource
+                $ref: '#/components/schemas/ErrorInvalidAuthorizationKey'
+        '404':
+          description: Resource Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorNotFound'
+  /CheckSupplierExist:
+    get:
+      tags:
+        - Supplier
+      summary: Check if Supplier Exists
+      description: 'Check if Supplier Exists'
+      operationId: CheckSupplierExist
+      responses:
+        '200':
+          description: OK
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorInvalidAuthorizationKey'
+        '404':
+          description: Resource Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorNotFound'
+  /GetSupplierDetails:
+    get:
+      tags:
+        - Supplier
+      summary: Get Supplier Details
+      description: 'Get Supplier Details'
+      operationId: GetSupplierDetails
+      responses:
+        '200':
+          description: OK
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorInvalidAuthorizationKey'
+        '404':
+          description: Resource Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorNotFound'
+  /CreateResubmitCancelSAC:
+    post:
+      tags:
+        - Supplier
+      summary: Create Resubmit Cancel SAC
+      description: 'Create Resubmit Cancel SAC'
+      operationId: CreateResubmitCancelSAC
+      responses:
+        '200':
+          description: OK
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorInvalidAuthorizationKey'
+        '404':
+          description: Resource Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorNotFound'
+  /MaintainVendorAcknowledgement:
+    post:
+      tags:
+        - Supplier
+      summary: Maintain Vendor Acknowledgement
+      description: 'Maintain Vendor Acknowledgement'
+      operationId: MaintainVendorAcknowledgement
+      responses:
+        '200':
+          description: OK
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorInvalidAuthorizationKey'
+        '404':
+          description: Resource Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorNotFound'
 security:
   - ApiKeyAuth: []
 components:
@@ -94,3 +197,30 @@ components:
       type: apiKey
       name: Authorization
       in: header
+  schemas:
+    ErrorInvalidAuthorizationKey:
+      type: object
+      description: Error Message for Invalid Authorization Key
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: "401"
+            message:
+              type: string
+              example: "Invalid Authorization key for resource"
+    ErrorNotFound:
+      type: object
+      description: Error Message for Resource not found
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: "404"
+            message:
+              type: string
+              example: "Resource Not Found"
